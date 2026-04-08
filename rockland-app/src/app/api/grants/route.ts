@@ -29,19 +29,25 @@ export async function POST(request: Request) {
     const data = await response.json();
     
     // Transform the response to a cleaner format
-    const opportunities = (data.data || []).map((opp: any) => ({
-      id: opp.id || opp.opportunityId,
-      number: opp.number || opp.opportunityNumber || '',
-      title: opp.title || opp.opportunityTitle || 'Untitled',
-      agency: opp.agency || opp.agencyName || 'Unknown Agency',
+    // API returns data in data.oppHits array
+    const oppHits = data.data?.oppHits || [];
+    const opportunities = oppHits.map((opp: any) => ({
+      id: opp.id,
+      number: opp.number || '',
+      title: opp.title || 'Untitled',
+      agency: opp.agency || 'Unknown Agency',
       openDate: opp.openDate || '',
       closeDate: opp.closeDate || '',
       awardCeiling: opp.awardCeiling || 0,
       awardFloor: opp.awardFloor || 0,
-      description: opp.description || opp.synopsis || '',
+      description: opp.synopsis || '',
+      oppStatus: opp.oppStatus || '',
     }));
 
-    return NextResponse.json({ opportunities });
+    return NextResponse.json({ 
+      opportunities,
+      totalCount: data.data?.hitCount || 0 
+    });
   } catch (error) {
     console.error('Error fetching grants:', error);
     return NextResponse.json(
