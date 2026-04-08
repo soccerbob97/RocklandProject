@@ -1,0 +1,97 @@
+{
+  "organization": {
+    "name": "Rockland Family Health Center",
+    "hrsa_grantee_id": "H80CS12345"
+  },
+  "clinical": {
+    "snapshot_date": "2026-04-01",
+    "total_patients": 8547,
+    "medicaid_patients": 6238,
+    "medicare_patients": 1156,
+    "uninsured_patients": 847,
+    "private_patients": 306,
+    "pediatric_count": 2134,
+    "adult_count": 5413,
+    "geriatric_count": 1000,
+    "services": [
+      "Primary Care",
+      "Dental",
+      "Mental Health",
+      "Pediatrics",
+      "Women's Health",
+      "Chronic Disease Management"
+    ],
+    "quality_metrics": {
+      "diabetesControl": 68.2,
+      "hypertensionControl": 72.4,
+      "cervicalCancerScreening": 81.3,
+      "colorectalCancerScreening": 62.8,
+      "childImmunizations": 78.9,
+      "prenatalCare": 85.2
+    }
+  },
+  "billing": {
+    "snapshot_date": "2026-04-01",
+    "medicaid_revenue": 4235000,
+    "medicare_revenue": 892000,
+    "grant_revenue": 1845000,
+    "self_pay_revenue": 124000,
+    "private_revenue": 156000,
+    "total_revenue": 7252000,
+    "claims_denial_rate": 8.2,
+    "avg_reimbursement_days": 34,
+    "outstanding_ar": 892000,
+    "collections_rate": 94.2
+  },
+  "grants": [
+    {
+      "grant_name": "Section 330 Health Center Program",
+      "aln": "93.224",
+      "award_amount": 2400000,
+      "period_start": "2025-09-01",
+      "period_end": "2026-08-31",
+      "status": "active",
+      "utilization": [
+        { "month": "2025-09-01", "amount_spent": 180000 },
+        { "month": "2025-10-01", "amount_spent": 195000 },
+        { "month": "2025-11-01", "amount_spent": 210000 },
+        { "month": "2025-12-01", "amount_spent": 185000 },
+        { "month": "2026-01-01", "amount_spent": 220000 },
+        { "month": "2026-02-01", "amount_spent": 175000 },
+        { "month": "2026-03-01", "amount_spent": 200000 }
+      ]
+    },
+    {
+      "grant_name": "Ryan White HIV/AIDS Program",
+      "aln": "93.914",
+      "award_amount": 450000,
+      "period_start": "2026-01-01",
+      "period_end": "2026-12-31",
+      "status": "active",
+      "utilization": [
+        { "month": "2026-01-01", "amount_spent": 35000 },
+        { "month": "2026-02-01", "amount_spent": 38000 },
+        { "month": "2026-03-01", "amount_spent": 32000 }
+      ]
+    },
+    {
+      "grant_name": "Behavioral Health Integration",
+      "aln": "93.243",
+      "award_amount": 325000,
+      "period_start": "2025-07-01",
+      "period_end": "2026-06-30",
+      "status": "active",
+      "utilization": [
+        { "month": "2025-07-01", "amount_spent": 28000 },
+        { "month": "2025-08-01", "amount_spent": 31000 },
+        { "month": "2025-09-01", "amount_spent": 29000 },
+        { "month": "2025-10-01", "amount_spent": 33000 },
+        { "month": "2025-11-01", "amount_spent": 27000 },
+        { "month": "2025-12-01", "amount_spent": 30000 },
+        { "month": "2026-01-01", "amount_spent": 32000 },
+        { "month": "2026-02-01", "amount_spent": 28000 },
+        { "month": "2026-03-01", "amount_spent": 31000 }
+      ]
+    }
+  ]
+}

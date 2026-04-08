@@ -15,8 +15,36 @@ A grant discovery, qualification, and data management platform for FQHC (Federal
 
 - **Frontend**: Next.js 16, React 19, TypeScript
 - **Styling**: TailwindCSS
-- **Auth & Database**: Supabase
+- **Auth**: Supabase Auth
 - **External API**: Grants.gov REST API
+- **Deployment**: Vercel
+
+## Architecture Decisions
+
+### Demo Mode with Static Data
+This MVP uses **pre-loaded sample data** to demonstrate the platform's capabilities:
+- Realistic FQHC patient demographics (8,547 patients)
+- Revenue breakdown by payer type ($7.2M total)
+- 3 active HRSA grants with utilization tracking
+- UDS quality metrics with benchmarks
+
+This approach was chosen because:
+- Target user (CFO) needs to see the value proposition immediately
+- Real EMR integrations require enterprise agreements
+- Demonstrates all features without complex setup
+
+### Why Grants.gov Only?
+- SAM.gov requires API key registration (weeks-long process)
+- Grants.gov has a free, public REST API
+- Covers federal health grants most relevant to FQHCs
+
+### Data Structure
+All sample data is defined in `src/lib/dummy-data.ts`:
+- **Organization** - FQHC with HRSA grantee ID
+- **Clinical Data** - Patient counts, demographics, quality metrics
+- **Billing Data** - Revenue by payer, denial rates, A/R
+- **HRSA Grants** - Active grants with monthly utilization
+- **Grant Pipeline** - Discovered opportunities with status
 
 ## Getting Started
 
@@ -26,7 +54,7 @@ A grant discovery, qualification, and data management platform for FQHC (Federal
 npm install
 ```
 
-### 2. Set Up Supabase
+### 2. Set Up Supabase (for Auth only)
 
 1. Create a new Supabase project at [supabase.com](https://supabase.com)
 2. Copy your project URL and anon key
@@ -37,21 +65,9 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-### 3. Run Database Migrations
+4. Run `supabase-schema.sql` in Supabase SQL Editor (creates auth tables)
 
-Open Supabase Dashboard → SQL Editor → New Query, then paste and run the contents of `supabase-schema.sql`.
-
-### 4. Link User to Organization
-
-After signing up, run this SQL to link your user to the demo organization:
-
-```sql
-UPDATE profiles 
-SET organization_id = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' 
-WHERE email = 'your-email@example.com';
-```
-
-### 5. Run Development Server
+### 3. Run Development Server
 
 ```bash
 npm run dev
@@ -65,34 +81,51 @@ Open [http://localhost:3000](http://localhost:3000)
 src/
 ├── app/
 │   ├── auth/           # Sign in/up pages
+│   ├── connect/        # Demo mode landing
 │   ├── dashboard/      # Main dashboard
-│   ├── data/           # EMR data sources
+│   ├── data/           # EMR data sources view
 │   ├── hrsa/           # HRSA funding tracker
 │   ├── uds/            # UDS report preview
-│   ├── grants/         # Grant discovery
-│   ├── pipeline/       # Grant pipeline
+│   ├── grants/         # Grant discovery (Grants.gov API)
+│   ├── pipeline/       # Grant pipeline management
 │   └── api/grants/     # Grants.gov API proxy
 ├── components/
 │   └── Sidebar.tsx     # Navigation
 ├── contexts/
-│   └── AuthContext.tsx # Auth state
-└── lib/
-    ├── supabase/       # Supabase clients
-    └── dummy-data.ts   # Mock EMR/HRSA data
+│   └── AuthContext.tsx # Auth state management
+├── lib/
+│   ├── supabase/       # Supabase client (browser + server)
+│   └── dummy-data.ts   # Sample FQHC data
+└── middleware.ts       # Auth middleware
 ```
 
-## Key Decisions
+## Sample Data
 
-1. **Dummy data for MVP** - EMR data is pre-loaded rather than requiring CRUD forms
-2. **Supabase for auth + DB** - Provides auth, database, and RLS out of the box
-3. **Grants.gov only** - SAM.gov requires API key registration (weeks wait)
-4. **Single org per user** - Simplifies data isolation for demo
+The demo includes realistic FQHC data:
+
+| Metric | Value |
+|--------|-------|
+| Total Patients | 8,547 |
+| Medicaid Patients | 6,238 (73%) |
+| Total Revenue | $7,252,000 |
+| HRSA Grants | 3 active |
+| Grant Utilization | 56% average |
 
 ## Production Improvements
 
-- Real EMR integrations (Epic FHIR, eClinicalWorks API)
-- Full UDS export to EHB format
-- SAM.gov integration
-- Multi-organization support
-- Email alerts for deadlines
-- AI-powered grant matching
+- **Real EMR Integrations** - Epic FHIR API, eClinicalWorks, Athenahealth
+- **Live Data Sync** - Webhook-based updates from EMR systems
+- **Full UDS Export** - Generate EHB-compatible XML files
+- **SAM.gov Integration** - Broader grant coverage (requires API key)
+- **Multi-Organization** - Support for health center networks
+- **Email Alerts** - Deadline reminders, under-spending warnings
+- **AI Grant Matching** - Score opportunities based on org capabilities
+
+## Demo Script
+
+1. **Sign in** at `/auth/signin`
+2. **View dashboard** - See patient counts, revenue, HRSA utilization
+3. **Check HRSA page** - See under-spending alerts for Ryan White grant
+4. **Search grants** - Try "FQHC" or "behavioral health"
+5. **View UDS report** - See data lineage and quality metrics
+6. **Explore pipeline** - See grant opportunities in progress

@@ -14,7 +14,7 @@ import {
   organizationData, 
   epicClinicalData, 
   oceanBillingData, 
-  hrsaGrants,
+  hrsaGrants, 
   grantPipeline 
 } from '@/lib/dummy-data';
 
@@ -35,7 +35,9 @@ export default function DashboardPage() {
   const underSpendingGrants = hrsaGrants.filter(g => g.status === 'under-spending');
   const totalHrsaAwarded = hrsaGrants.reduce((sum, g) => sum + g.awardAmount, 0);
   const totalHrsaSpent = hrsaGrants.reduce((sum, g) => sum + g.totalSpent, 0);
-  const overallUtilization = (totalHrsaSpent / totalHrsaAwarded) * 100;
+  const overallUtilization = totalHrsaAwarded > 0 ? (totalHrsaSpent / totalHrsaAwarded) * 100 : 0;
+
+  const insuranceBreakdown = epicClinicalData.byInsurance;
 
   return (
     <div className="p-8">
@@ -81,7 +83,7 @@ export default function DashboardPage() {
               <p className="text-2xl font-bold text-gray-900">{formatNumber(epicClinicalData.totalPatients)}</p>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">From Epic EMR • {epicClinicalData.snapshotDate}</p>
+          <p className="text-xs text-gray-400 mt-3">From {epicClinicalData.source} • {epicClinicalData.snapshotDate}</p>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-5">
@@ -94,7 +96,7 @@ export default function DashboardPage() {
               <p className="text-2xl font-bold text-gray-900">{formatCurrency(oceanBillingData.totalRevenue)}</p>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">From Ocean EMR • {oceanBillingData.snapshotDate}</p>
+          <p className="text-xs text-gray-400 mt-3">From {oceanBillingData.source} • {oceanBillingData.snapshotDate}</p>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-5">
@@ -139,7 +141,7 @@ export default function DashboardPage() {
             <div>
               <p className="text-sm font-medium text-gray-700 mb-2">By Insurance Type</p>
               <div className="space-y-2">
-                {Object.entries(epicClinicalData.byInsurance).map(([key, value]) => {
+                {Object.entries(insuranceBreakdown).map(([key, value]) => {
                   const percent = (value / epicClinicalData.totalPatients) * 100;
                   return (
                     <div key={key} className="flex items-center gap-3">
