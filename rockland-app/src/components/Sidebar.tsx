@@ -9,10 +9,8 @@ import {
   FileText, 
   Search, 
   GitBranch,
-  LogOut,
   Building2
 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -25,7 +23,6 @@ const navigation = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { signOut, user } = useAuth();
 
   return (
     <div className="flex flex-col w-64 bg-white border-r border-gray-200 min-h-screen">
@@ -60,17 +57,10 @@ export default function Sidebar() {
       </nav>
 
       <div className="px-3 py-4 border-t border-gray-200">
-        <div className="px-3 py-2 mb-2">
-          <p className="text-xs text-gray-500">Signed in as</p>
-          <p className="text-sm font-medium text-gray-900 truncate">{user?.email}</p>
+        <div className="px-3 py-2">
+          <p className="text-xs text-gray-500">Demo Mode</p>
+          <p className="text-sm font-medium text-gray-900">Sample FQHC Data</p>
         </div>
-        <button
-          onClick={() => signOut()}
-          className="flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
-        >
-          <LogOut className="h-5 w-5 text-gray-400" />
-          Sign out
-        </button>
       </div>
     </div>
   );
